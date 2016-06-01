@@ -15,15 +15,16 @@
         href='/stylesheets/smartphone.css' />
   </head>
   <body>
-    <header>
+    <div id="page">
+    <header class="main">
       <h2>Quiz: el juego de las preguntas</h2>
     </header>
-    <nav>
+    <nav class="main" role="navigation">
       <a href="/">Inicio</a>
-      <a href="/question">Preguntas</a>
+      <a href="/quizzes">Preguntas</a>
       <a href="/author">Autor</a>
     </nav>  
-    <section>
+    <section class="main">
       <div><%- body %></div>
     </section>
     <footer>
@@ -33,5 +34,6 @@
       <a href="https://github.com/paulapalaciosm/quiz">Repositorio de Paula Palacios</a>
       </p>
     </footer>
+    </div>
   </body>
 </html>

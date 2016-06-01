@@ -1,12 +1,18 @@
 //GET /question
 var  models = require('../models');
 
-exports.question = function(req,res,next){
+exports.index = function(req,res,next){
+	models.Quiz.findAll().then(function(quizzes){
+		res.render('quizzes/index',{ quizzes: quizzes});
+	}).catch(function(error){next(error);});
+};
+
+exports.show = function(req,res,next){
 	
-	models.Quiz.findOne().then(function(quiz){
+	models.Quiz.findById(req.params.quizId).then(function(quiz){
 		if(quiz){
 			var answer = req.query.answer || '';
-			res.render('quizzes/question',{question:'Capital de Italia',
+			res.render('quizzes/show',{quiz: quiz,
 									answer: answer});
 		}else{
 			throw new Error('No hay preguntas en la BBDD.');
@@ -18,18 +24,18 @@ exports.question = function(req,res,next){
 
 exports.check = function(req,res,next){
 	
-models.Quiz.findOne().then(function(quiz){
+models.Quiz.findById(req.params.quizId).then(function(quiz){
 		if(quiz){
 			var answer = req.query.answer || '';
-			var result = req.query.answer === 'Roma' ? 'Correcta' : 'Incorrecta' ;
-			res.render('quizzes/result', {result: result,
-									answer: answer});
+			var result = answer === quiz.answer ? 'Correcta' : 'Incorrecta' ;
+			res.render('quizzes/result', { quiz: quiz, result: result,answer: answer});
 		}else{
 			throw new Error('No hay preguntas en la BBDD.');
 		}
 	}).catch(function(error){next(error);});
 };
 
-exports.author = function(res,res,next){
+exports.author = function(req,res,next){
 	res.render('quizzes/author');
 };
+
