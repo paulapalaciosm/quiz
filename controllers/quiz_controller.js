@@ -59,4 +59,28 @@ models.Quiz.findById(req.params.quizId).then(function(quiz){
 exports.author = function(req,res,next){
 	res.render('quizzes/author');
 };
+// GET /quizzes/new
+exports.new = function(req, res, next) {
+
+
+    var quiz = models.Quiz.build({question: "", answer: ""});
+    res.render('quizzes/new', {quiz: quiz});
+};
+
+// POST /quizzes/create
+exports.create = function(req, res, next) {
+
+    var quiz =  models.Quiz.build({ question: req.body.quiz.question, 
+                 answer:   req.body.quiz.answer});
+
+    // Guarda en la tabla Quizzes el nuevo quiz.
+    quiz.save({fields : ["question", "answer"]})
+    .then(function(quiz) {
+        req.flash('success', 'Pregunta y Respuesta guardadas con éxito.');
+        res.redirect('/quizzes');
+    }).catch(function(error) {
+        req.flash('error', 'Error al crear un Quiz: '+error.message);
+        next(error);
+    }); 
+};
 
