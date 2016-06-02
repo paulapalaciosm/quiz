@@ -101,7 +101,7 @@ exports.update = function(req, res, next) {
     req.user.save({fields: ["password", "salt"]})
         .then(function(user) {
             req.flash('success', 'Usuario actualizado con éxito.');
-            res.redirect('/users');  // Redirección HTTP a /
+            res.redirect('/session');  // Redirección HTTP a /
         })
         .catch(Sequelize.ValidationError, function(error) {
 
@@ -124,7 +124,7 @@ exports.destroy = function(req, res, next) {
         .then(function() {
 
             req.flash('success', 'Usuario eliminado con éxito.');
-            res.redirect('/users');
+            res.redirect('/');
         })
         .catch(function(error){ 
             next(error); 
