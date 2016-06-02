@@ -2,9 +2,17 @@
 var  models = require('../models');
 
 exports.index = function(req,res,next){
-	models.Quiz.findAll().then(function(quizzes){
-		res.render('quizzes/index',{ quizzes: quizzes});
+	if(req.query.search!==undefined){
+		models.Quiz.findAll({where: {question: {$like: "%"+req.query.search+"%"}}}).then(function(quizzes){
+			res.render('quizzes/index',{ quizzes: quizzes});
+		});
+	}
+		else{
+			models.Quiz.findAll().then(function(quizzes){
+			res.render('quizzes/index',{ quizzes: quizzes});
 	}).catch(function(error){next(error);});
+		}
+	
 };
 
 exports.show = function(req,res,next){
